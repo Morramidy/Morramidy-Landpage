@@ -6,8 +6,9 @@ const organizationJsonLd = {
   name: "Morramidy",
   legalName: "Morramidy Desenvolvimento de Software LTDA",
   url: "https://morramidy.com.br",
-  email: "contato@morramidy.com.br",
+  email: "morramidy.development@gmail.com",
   telephone: "+55 41 9888-0068",
+  sameAs: ["https://www.instagram.com/morramidy_/"],
   address: {
     "@type": "PostalAddress",
     streetAddress: "Av. Paulista, 1106",

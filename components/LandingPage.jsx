@@ -2,83 +2,183 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+const CONTACT_EMAIL = "morramidy.development@gmail.com";
+const INSTAGRAM_URL = "https://www.instagram.com/morramidy_/";
+
 const navLinks = [
+  ["Diagnóstico", "#diagnostico"],
   ["Soluções", "#solucoes"],
   ["Processo", "#processo"],
-  ["Tecnologias", "#tecnologias"],
-  ["Cases", "#cases"],
-  ["Sobre", "#sobre"],
+  ["Provas", "#provas"],
+  ["FAQ", "#faq"],
   ["Contato", "#contato"],
 ];
 
-const featureCards = [
-  {
-    title: "Desenvolvimento sob encomenda",
-    text: "Soluções construídas para a lógica, escala e prioridade real do negócio.",
-    icon: "M4 7h16M7 4v16M17 4v16M4 17h16",
-  },
-  {
-    title: "Consultoria em tecnologia",
-    text: "Decisões técnicas, arquitetura e evolução digital com clareza de impacto.",
-    icon: "M5 17l4-4 3 3 7-8M5 20h14",
-  },
-  {
-    title: "Web design e interfaces",
-    text: "Experiências modernas, rápidas e fáceis de usar em cada ponto de contato.",
-    icon: "M4 5h16v14H4zM4 10h16M9 5v14",
-  },
-  {
-    title: "Dados, integrações e automações",
-    text: "Fluxos conectados, dados estruturados e operações menos dependentes de esforço manual.",
-    icon: "M6 8a3 3 0 106 0 3 3 0 00-6 0zM13 16a3 3 0 106 0 3 3 0 00-6 0zM11 10l4 4",
-  },
+const problems = [
+  [
+    "Processos manuais",
+    "Planilhas, mensagens e tarefas repetidas consomem tempo e aumentam o risco de erro.",
+  ],
+  [
+    "Dados espalhados",
+    "Informações importantes ficam desconectadas, dificultando análise e tomada de decisão.",
+  ],
+  [
+    "Sistemas que não conversam",
+    "Ferramentas isoladas criam retrabalho e impedem uma operação fluida.",
+  ],
+  [
+    "Produto sem evolução",
+    "Ideias boas travam quando não há arquitetura, priorização e execução técnica.",
+  ],
+  [
+    "Baixa visibilidade",
+    "Sem indicadores claros, a gestão decide com atraso ou pouca confiança.",
+  ],
+];
+
+const comparisonRows = [
+  [
+    "Planilhas, mensagens e tarefas soltas",
+    "Fluxo digital com etapas, responsáveis e indicadores no mesmo lugar",
+  ],
+  [
+    "Sistemas genéricos que forçam adaptação do time",
+    "Software desenhado para as regras, exceções e prioridades da operação",
+  ],
+  [
+    "Decisão sem visão clara de dados",
+    "Painéis e automações que mostram gargalos antes que eles virem custo",
+  ],
+  [
+    "Ideias travadas por incerteza técnica",
+    "Diagnóstico, protótipo e arquitetura antes de comprometer investimento",
+  ],
+];
+
+const valuePillars = [
+  [
+    "Estratégia antes do código",
+    "Transformamos necessidade de negócio em escopo, prioridades e roadmap técnico.",
+  ],
+  [
+    "Engenharia preparada para evoluir",
+    "Construímos sistemas organizados, integráveis e prontos para manutenção.",
+  ],
+  [
+    "Experiência para usuários reais",
+    "Desenhamos fluxos claros para melhorar adoção, eficiência e tomada de decisão.",
+  ],
 ];
 
 const solutions = [
   [
     "Software sob medida",
-    "Sistemas desenvolvidos para atender exatamente às necessidades da sua operação.",
+    "Sistemas criados para regras, fluxos e objetivos específicos da sua empresa.",
   ],
   [
-    "Sistemas web e plataformas SaaS",
-    "Produtos digitais escaláveis, seguros e preparados para crescimento.",
+    "Sistemas web",
+    "Aplicações modernas para gestão, atendimento, operação, análise e relacionamento.",
   ],
   [
-    "Web design e landing pages",
-    "Experiências digitais modernas, rápidas e orientadas à conversão.",
+    "MVP e SaaS",
+    "Do primeiro produto validável a uma base técnica consistente para crescimento.",
   ],
-  ["Integrações e APIs", "Conectamos sistemas, dados e operações com arquitetura robusta."],
   [
-    "Consultoria em tecnologia",
-    "Apoiamos decisões técnicas, arquitetura, produto e evolução digital.",
+    "Integrações e APIs",
+    "Conectamos sistemas, bancos de dados e serviços externos com arquitetura confiável.",
   ],
-  ["Dados e hospedagem", "Estruturação, tratamento, aplicações e ambientes digitais confiáveis."],
+  [
+    "Automação de processos",
+    "Reduzimos tarefas manuais e criamos fluxos digitais mais previsíveis.",
+  ],
+  [
+    "Modernização de sistemas",
+    "Evoluímos produtos existentes com melhor performance, UX e manutenção.",
+  ],
+  [
+    "UX/UI para produtos digitais",
+    "Interfaces claras, profissionais e funcionais para melhorar adoção e eficiência.",
+  ],
+  [
+    "Dashboards e indicadores",
+    "Painéis para transformar dados operacionais em decisão e visibilidade.",
+  ],
 ];
 
 const processSteps = [
-  ["Diagnóstico", "Entendemos o problema, o negócio e os objetivos."],
-  ["Estratégia", "Definimos arquitetura, escopo, prioridades e roadmap."],
-  ["Design", "Criamos interfaces claras, modernas e funcionais."],
-  ["Desenvolvimento", "Construímos com código limpo, escalável e seguro."],
-  ["Implantação", "Publicamos, integramos e acompanhamos a operação."],
-  ["Evolução", "Medimos resultados e aprimoramos continuamente."],
+  ["Diagnóstico", "Entendemos o problema, o negócio, os usuários e as restrições."],
+  ["Escopo", "Definimos prioridades, funcionalidades e critérios de sucesso."],
+  ["Protótipo", "Validamos fluxos e telas antes de comprometer desenvolvimento."],
+  ["Arquitetura", "Planejamos base técnica, integrações, dados, segurança e evolução."],
+  ["Desenvolvimento", "Construímos com ciclos objetivos, qualidade técnica e comunicação clara."],
+  ["Implantação", "Publicamos, configuramos ambientes e acompanhamos a entrada em operação."],
+  ["Evolução", "Medimos, ajustamos e expandimos conforme o negócio cresce."],
 ];
 
 const differentials = [
-  ["Engenharia orientada a negócio", "Cada decisão técnica parte do impacto esperado para a operação."],
-  ["Design limpo e funcional", "Interfaces sofisticadas, objetivas e fáceis de usar."],
+  ["Menos risco técnico", "Decisões importantes são tomadas antes de comprometer tempo e orçamento."],
+  ["Clareza de execução", "Você sabe o que será construído, por que e em qual prioridade."],
+  ["Design funcional", "A interface serve ao processo, não apenas à estética."],
+  ["Arquitetura preparada", "O sistema nasce pronto para manutenção, integração e crescimento."],
+  ["Comunicação direta", "Riscos, decisões e próximos passos ficam visíveis durante o projeto."],
+  ["Visão de negócio", "A entrega é pensada para operação, eficiência e resultado."],
+];
+
+const proofItems = [
+  "Sistemas internos de gestão",
+  "Plataformas web e portais",
+  "Produtos MVP e SaaS",
+  "Dashboards operacionais",
+  "Integrações entre sistemas",
+  "Automação de rotinas",
+  "Modernização de sistemas",
+  "UX/UI para produtos digitais",
+];
+
+const offerTracks = [
   [
-    "Arquitetura escalável",
-    "Base técnica preparada para crescer com segurança e previsibilidade.",
+    "Diagnóstico técnico",
+    "Organizamos ideia, riscos, integrações e prioridades antes de iniciar o desenvolvimento.",
   ],
-  ["Comunicação objetiva", "Prioridades, riscos e próximos passos sempre claros."],
   [
-    "Entregas sob medida",
-    "Soluções criadas para contexto real, sem empilhar recursos desnecessários.",
+    "MVP validável",
+    "Construímos uma primeira versão enxuta para testar valor, operação e experiência de uso.",
   ],
   [
-    "Performance, segurança e evolução",
-    "Produtos rápidos, confiáveis e prontos para melhoria contínua.",
+    "Sistema sob medida",
+    "Criamos plataformas, portais, CRMs, ERPs internos e fluxos digitais específicos.",
+  ],
+  [
+    "Evolução de produto",
+    "Melhoramos sistemas existentes com UX, arquitetura, performance e integrações.",
+  ],
+];
+
+const examples = [
+  [
+    "CRM customizado",
+    "Atendimento, funil comercial, histórico e automações no fluxo da sua empresa.",
+  ],
+  [
+    "Portal de clientes",
+    "Área logada para dados, documentos, solicitações e acompanhamento.",
+  ],
+  [
+    "Sistema operacional interno",
+    "Controle de processos, aprovações, cadastros e tarefas críticas.",
+  ],
+  [
+    "Dashboard executivo",
+    "Indicadores consolidados para gestão acompanhar performance e gargalos.",
+  ],
+  [
+    "Plataforma SaaS",
+    "Produto digital com usuários, permissões, planos e evolução contínua.",
+  ],
+  [
+    "Integrações e automações",
+    "APIs e rotinas para conectar ferramentas e eliminar retrabalho.",
   ],
 ];
 
@@ -86,8 +186,8 @@ const technologies = [
   "Front-end",
   "Back-end",
   "Cloud",
-  "APIs",
-  "Dados",
+  "APIs REST",
+  "Bancos de dados",
   "Automação",
   "Segurança",
   "UX/UI",
@@ -95,43 +195,36 @@ const technologies = [
   "Node.js",
   "Python",
   "AWS",
-  "REST",
-  "Bancos de dados",
   "Integrações",
+  "Arquitetura",
 ];
 
-const cases = [
-  {
-    image: "/assets/brand-wall-dark.png",
-    title: "Plataforma interna de gestão",
-    text: "Operações, cadastros, aprovações e indicadores em um sistema próprio.",
-  },
-  {
-    image: "/assets/brand-wall-light.png",
-    title: "CRM ou atendimento customizado",
-    text: "Fluxos comerciais e relacionamento com clientes adaptados ao seu processo.",
-  },
-  {
-    image: "/assets/brand-wallpaper.jpg",
-    title: "Portal institucional premium",
-    text: "Presença digital sofisticada, responsiva e pensada para conversão.",
-  },
-  {
-    image: "/assets/brand-wall-dark.png",
-    title: "Dashboard de dados e indicadores",
-    text: "Visibilidade operacional com métricas, integrações e relatórios acionáveis.",
-  },
+const faqs = [
+  [
+    "Preciso ter o escopo pronto?",
+    "Não. Podemos começar pelo diagnóstico e transformar sua necessidade em escopo, prioridades e plano técnico.",
+  ],
+  [
+    "Vocês fazem apenas desenvolvimento?",
+    "Não. Atuamos com estratégia, UX/UI, arquitetura, desenvolvimento, integrações, implantação e evolução.",
+  ],
+  [
+    "É possível começar com um MVP?",
+    "Sim. Priorizamos uma primeira versão enxuta para validar valor antes de ampliar investimento e escopo.",
+  ],
+  [
+    "Vocês integram com sistemas existentes?",
+    "Sim. Projetamos APIs, automações e integrações conforme o ambiente técnico disponível.",
+  ],
+  [
+    "Vocês fazem manutenção e evolução?",
+    "Sim. Podemos acompanhar o produto após a implantação, corrigindo, melhorando e expandindo funcionalidades.",
+  ],
+  [
+    "Como pedir orçamento?",
+    "O melhor caminho é iniciar por uma conversa de diagnóstico para entender objetivo, complexidade e prioridade.",
+  ],
 ];
-
-function IconTile({ path }) {
-  return (
-    <span className="icon-tile" aria-hidden="true">
-      <svg viewBox="0 0 24 24">
-        <path d={path} />
-      </svg>
-    </span>
-  );
-}
 
 function Brand({ footer = false }) {
   return (
@@ -142,12 +235,145 @@ function Brand({ footer = false }) {
   );
 }
 
+function Arrow() {
+  return <span aria-hidden="true">-&gt;</span>;
+}
+
+function ProductShowcase() {
+  return (
+    <div className="product-showcase" aria-hidden="true">
+      <div className="showcase-tabs">
+        {["Operação", "Dados", "Automação", "Produto"].map((item, index) => (
+          <span className={index === 0 ? "is-active" : ""} key={item}>
+            {item}
+          </span>
+        ))}
+      </div>
+
+      <div className="product-window">
+        <div className="mockup-topbar">
+          <span></span>
+          <span></span>
+        </div>
+
+        <div className="product-window__body">
+          <aside className="product-window__rail">
+            {["01", "02", "03", "04"].map((item) => (
+              <span key={item}>{item}</span>
+            ))}
+          </aside>
+
+          <div className="product-window__main">
+            <div className="product-window__header">
+              <div>
+                <small>Roadmap priorizado</small>
+                <strong>Sistema operacional interno</strong>
+              </div>
+              <span>Em produção</span>
+            </div>
+
+            <div className="metric-grid">
+              <div>
+                <small>Gargalos mapeados</small>
+                <strong>Fluxos críticos</strong>
+              </div>
+              <div>
+                <small>Risco reduzido</small>
+                <strong>Antes do código</strong>
+              </div>
+              <div>
+                <small>Entrega</small>
+                <strong>Ciclos claros</strong>
+              </div>
+            </div>
+
+            <div className="workflow-board">
+              {["Ideia", "Escopo", "UX/UI", "API", "Deploy"].map((item, index) => (
+                <div className="workflow-node" key={item}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <strong>{item}</strong>
+                </div>
+              ))}
+            </div>
+
+            <div className="chart-card">
+              <div>
+                <small>Visibilidade da operação</small>
+                <strong>Dados, produto e execução conectados.</strong>
+              </div>
+              <div className="chart-bars">
+                {[42, 58, 48, 72, 66, 84].map((height, index) => (
+                  <span style={{ "--bar-height": `${height}%` }} key={index}></span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CaseVisual({ index }) {
+  return (
+    <div className="case-visual" aria-hidden="true">
+      <div className="case-visual__topbar">
+        <span></span>
+        <span></span>
+      </div>
+      <div className="case-visual__layout">
+        <div className="case-visual__rail">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div className="case-visual__content">
+          <span className="case-visual__line case-visual__line--wide"></span>
+          <div className="case-visual__cards">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div className="case-visual__chart">
+            {[44, 62, 52, 76, 66].map((height, barIndex) => (
+              <span style={{ "--bar-height": `${height - index * 2}%` }} key={barIndex}></span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function LandingPage() {
   const [navOpen, setNavOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showStickyCta, setShowStickyCta] = useState(false);
 
   const closeNav = useCallback(() => {
     setNavOpen(false);
+  }, []);
+
+  const handleDiagnosticSubmit = useCallback((event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const fields = [
+      ["Nome", formData.get("name")],
+      ["Empresa", formData.get("company")],
+      ["E-mail", formData.get("email")],
+      ["Tipo de projeto", formData.get("projectType")],
+      ["Principal desafio", formData.get("challenge")],
+    ];
+    const company = formData.get("company") || "novo projeto";
+    const body = fields
+      .filter(([, value]) => String(value || "").trim())
+      .map(([label, value]) => `${label}: ${value}`)
+      .join("\n");
+
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+      `Diagnóstico Morramidy - ${company}`,
+    )}&body=${encodeURIComponent(body)}`;
   }, []);
 
   useEffect(() => {
@@ -159,7 +385,10 @@ export default function LandingPage() {
   }, [navOpen]);
 
   useEffect(() => {
-    const syncHeaderState = () => setIsScrolled(window.scrollY > 12);
+    const syncHeaderState = () => {
+      setIsScrolled(window.scrollY > 12);
+      setShowStickyCta(window.scrollY > 1800);
+    };
 
     syncHeaderState();
     window.addEventListener("scroll", syncHeaderState, { passive: true });
@@ -250,8 +479,8 @@ export default function LandingPage() {
             ))}
           </nav>
 
-          <a className="header-cta" href="#contato" onClick={closeNav}>
-            Fale com um especialista
+          <a className="header-cta" href="#diagnostico" onClick={closeNav}>
+            Agendar diagnóstico
           </a>
         </div>
       </header>
@@ -260,93 +489,149 @@ export default function LandingPage() {
         <section className="hero" id="top" aria-labelledby="hero-title">
           <div className="section-shell hero__inner">
             <div className="hero__copy reveal">
-              <p className="eyebrow">Software house premium</p>
-              <h1 id="hero-title">Software sob medida para empresas que constroem o futuro.</h1>
+              <div className="hero__proof" aria-label="Frentes estratégicas da Morramidy">
+                <span>Diagnóstico</span>
+                <span>Escopo</span>
+                <span>UX/UI</span>
+                <span>Arquitetura</span>
+                <strong>Clareza técnica antes da primeira linha de código.</strong>
+              </div>
+              <p className="eyebrow">Software house estratégica</p>
+              <h1 id="hero-title">
+                Software sob medida para transformar processos complexos em produtos digitais
+                escaláveis.
+              </h1>
               <p className="hero__lead">
-                Unimos engenharia, design e estratégia para desenvolver soluções digitais
-                inteligentes, escaláveis e orientadas a resultado.
+                A Morramidy ajuda empresas a estruturar, desenhar e desenvolver sistemas web,
+                plataformas, integrações e produtos digitais com clareza técnica, boa experiência
+                de uso e arquitetura preparada para evolução.
               </p>
               <div className="hero__actions">
-                <a className="button button--primary" href="#contato">
-                  Comece seu projeto
-                  <span aria-hidden="true">-&gt;</span>
+                <a className="button button--primary" href="#diagnostico">
+                  Agendar diagnóstico
+                  <Arrow />
                 </a>
-                <a className="button button--ghost" href="#solucoes">
-                  Conheça nossas soluções
+                <a className="button button--ghost" href="#exemplos">
+                  Ver exemplos de soluções
                 </a>
               </div>
-              <div className="hero__metrics" aria-label="Áreas de atuação">
-                <span>Software</span>
-                <span>Web design</span>
-                <span>Dados</span>
-                <span>Cloud</span>
+              <p className="hero__microcopy">
+                Conte sua ideia ou gargalo operacional. Nós ajudamos a transformar em escopo,
+                arquitetura e plano de execução.
+              </p>
+              <div className="hero__metrics" aria-label="Frentes de atuação">
+                <span>MVP e SaaS</span>
+                <span>Sistemas web</span>
+                <span>Integrações</span>
+                <span>Automação</span>
               </div>
             </div>
 
-            <div className="hero__visual reveal reveal--delay" aria-hidden="true">
-              <div className="cube-stage">
-                <img
-                  src="/assets/logo-icon-white.png"
-                  alt=""
-                  className="cube-stage__logo"
-                  fetchPriority="high"
-                />
-                <div className="signal-card signal-card--top">
-                  <span>Arquitetura</span>
-                  <strong>Escalável</strong>
-                </div>
-                <div className="signal-card signal-card--bottom">
-                  <span>Operação</span>
-                  <strong>Integrada</strong>
-                </div>
-                <div className="signal-grid">
-                  {Array.from({ length: 12 }).map((_, index) => (
-                    <span key={index}></span>
-                  ))}
-                </div>
+            <div className="hero__visual reveal reveal--delay">
+              <ProductShowcase />
+            </div>
+          </div>
+        </section>
+
+        <section className="section-block section-block--tight comparison-section" aria-labelledby="comparison-title">
+          <div className="section-shell">
+            <div className="section-head section-head--wide reveal">
+              <p className="eyebrow">Antes e depois</p>
+              <h2 id="comparison-title">
+                Não é só desenvolver uma tela. É transformar a operação em um produto digital que
+                funciona.
+              </h2>
+              <p>
+                O salto de qualidade vem quando processo, dados, experiência e arquitetura deixam
+                de viver separados.
+              </p>
+            </div>
+
+            <div className="comparison-card reveal">
+              <div className="comparison-card__head">
+                <span>O que limita crescimento</span>
+                <strong>vs</strong>
+                <span>O que construímos</span>
+              </div>
+              <div className="comparison-rows">
+                {comparisonRows.map(([before, after]) => (
+                  <div className="comparison-row" key={before}>
+                    <p>{before}</p>
+                    <span></span>
+                    <p>{after}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        <section className="section-block" id="solucoes" aria-labelledby="authority-title">
+        <section className="section-block section-block--tight" id="problemas" aria-labelledby="problems-title">
           <div className="section-shell">
-            <div className="section-head reveal">
-              <p className="eyebrow">Precisão digital</p>
-              <h2 id="authority-title">Tecnologia com precisão, estratégia e fluidez.</h2>
+            <div className="section-head section-head--wide reveal">
+              <p className="eyebrow">Problemas que destravam crescimento</p>
+              <h2 id="problems-title">
+                Quando a operação cresce, planilhas e sistemas genéricos começam a limitar o
+                negócio.
+              </h2>
               <p>
-                A Morramidy desenvolve sistemas, plataformas, sites e aplicações digitais sob
-                medida para empresas que precisam transformar processos, escalar operações e criar
-                experiências digitais de alto impacto.
+                Seu negócio não precisa de mais uma ferramenta padrão. Precisa de uma solução que
+                acompanhe a forma como sua operação realmente funciona.
               </p>
             </div>
 
-            <div className="authority-grid">
-              {featureCards.map((card) => (
-                <article className="feature-card reveal" key={card.title}>
-                  <IconTile path={card.icon} />
-                  <h3>{card.title}</h3>
-                  <p>{card.text}</p>
+            <div className="problem-grid">
+              {problems.map(([title, text], index) => (
+                <article className="problem-card reveal" key={title}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="section-block section-block--compact" aria-labelledby="solutions-title">
+        <section className="section-block section-block--alt" aria-labelledby="value-title">
+          <div className="section-shell">
+            <div className="section-head section-head--split reveal">
+              <div>
+                <p className="eyebrow">Proposta de valor</p>
+                <h2 id="value-title">Da ideia ao software em produção, com estratégia antes do código.</h2>
+              </div>
+              <p>
+                Antes de desenvolver, entendemos o problema, o contexto do negócio e o que realmente
+                precisa ser construído. Isso reduz desperdício, melhora a experiência do usuário e
+                aumenta a chance de o produto gerar valor.
+              </p>
+            </div>
+
+            <div className="value-grid">
+              {valuePillars.map(([title, text], index) => (
+                <article className="pillar-card reveal" key={title}>
+                  <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section-block" id="solucoes" aria-labelledby="solutions-title">
           <div className="section-shell">
             <div className="section-head section-head--split reveal">
               <div>
                 <p className="eyebrow">Soluções</p>
-                <h2 id="solutions-title">Soluções digitais completas para o seu negócio.</h2>
+                <h2 id="solutions-title">Produtos digitais sob medida para operações que precisam evoluir.</h2>
               </div>
               <p>
                 De sistemas internos a plataformas digitais, cada entrega é pensada para ser útil,
-                clara, performática e preparada para evoluir.
+                clara, segura e preparada para crescer sem perder controle.
               </p>
             </div>
 
-            <div className="solutions-grid">
+            <div className="solutions-grid solutions-grid--expanded">
               {solutions.map(([title, text], index) => (
                 <article className="solution-card reveal" key={title}>
                   <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
@@ -358,14 +643,14 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="section-block" id="processo" aria-labelledby="process-title">
+        <section className="section-block section-block--alt" id="processo" aria-labelledby="process-title">
           <div className="section-shell">
             <div className="section-head reveal">
               <p className="eyebrow">Processo</p>
-              <h2 id="process-title">Do conceito ao produto em produção.</h2>
+              <h2 id="process-title">Um processo claro para reduzir risco e acelerar decisões.</h2>
               <p>
-                Um fluxo claro para reduzir incerteza, priorizar o que gera valor e construir com
-                qualidade desde o primeiro ciclo.
+                A sequência de trabalho foi desenhada para dar visibilidade ao projeto, evitar
+                desperdício e construir com qualidade desde o primeiro ciclo.
               </p>
             </div>
 
@@ -385,7 +670,7 @@ export default function LandingPage() {
           <div className="section-shell">
             <div className="section-head reveal">
               <p className="eyebrow">Diferenciais</p>
-              <h2 id="why-title">Por que escolher a Morramidy?</h2>
+              <h2 id="why-title">Por que escolher uma software house estratégica.</h2>
             </div>
 
             <div className="differentials-grid">
@@ -399,62 +684,77 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="product-section" aria-labelledby="product-title">
-          <div className="section-shell product-grid">
-            <div className="dashboard-mockup reveal" aria-label="Mockup de dashboard digital">
-              <div className="mockup-sidebar">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <div className="mockup-main">
-                <div className="mockup-topbar">
-                  <span></span>
-                  <span></span>
-                </div>
-                <div className="metric-row">
-                  <div>
-                    <strong>98%</strong>
-                    <span>uptime</span>
-                  </div>
-                  <div>
-                    <strong>42k</strong>
-                    <span>eventos</span>
-                  </div>
-                  <div>
-                    <strong>12</strong>
-                    <span>integrações</span>
-                  </div>
-                </div>
-                <div className="chart-panel">
-                  {["44%", "62%", "52%", "78%", "66%", "88%"].map((height) => (
-                    <span style={{ height }} key={height}></span>
-                  ))}
-                </div>
-                <div className="data-list">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
+        <section className="product-section" id="provas" aria-labelledby="proof-title">
+          <div className="section-shell proof-grid">
+            <div className="product-copy reveal">
+              <p className="eyebrow">Provas de capacidade</p>
+              <h2 id="proof-title">Experiência aplicada em desafios digitais reais.</h2>
+              <p>
+                A Morramidy atua em frentes que exigem organização técnica, visão de produto e
+                entendimento de operação. O foco é transformar complexidade em sistemas usáveis,
+                integrados e preparados para evoluir.
+              </p>
             </div>
 
-            <div className="product-copy reveal">
-              <p className="eyebrow">Produto digital</p>
-              <h2 id="product-title">
-                Criamos produtos digitais que unem performance técnica, experiência de usuário e
-                visão estratégica.
-              </h2>
-              <p>
-                Sistemas internos, portais, dashboards e plataformas passam a operar como ativos de
-                negócio: organizam dados, reduzem atrito e dão suporte a decisões melhores.
-              </p>
+            <div className="proof-list reveal">
+              {proofItems.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
             </div>
           </div>
         </section>
 
-        <section className="section-block" id="tecnologias" aria-labelledby="tech-title">
+        <section className="section-block section-block--alt" aria-labelledby="tracks-title">
+          <div className="section-shell">
+            <div className="section-head section-head--split reveal">
+              <div>
+                <p className="eyebrow">Caminhos de contratação</p>
+                <h2 id="tracks-title">Entre pelo ponto certo do seu projeto.</h2>
+              </div>
+              <p>
+                A conversa comercial fica mais objetiva quando o desafio é enquadrado em uma trilha
+                clara: diagnóstico, MVP, sistema sob medida ou evolução.
+              </p>
+            </div>
+
+            <div className="tracks-grid">
+              {offerTracks.map(([title, text], index) => (
+                <article className="track-card reveal" key={title}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section-block" id="exemplos" aria-labelledby="examples-title">
+          <div className="section-shell">
+            <div className="section-head reveal">
+              <p className="eyebrow">Aplicações</p>
+              <h2 id="examples-title">O que podemos construir com você.</h2>
+              <p>
+                Exemplos concretos de produtos e sistemas que geram controle, reduzem retrabalho e
+                criam vantagem operacional.
+              </p>
+            </div>
+
+            <div className="examples-grid">
+              {examples.map(([title, text], index) => (
+                <article className="case-card reveal" key={title}>
+                  <CaseVisual index={index} />
+                  <div className="case-card__body">
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section-block section-block--compact" id="tecnologias" aria-labelledby="tech-title">
           <div className="section-shell">
             <div className="section-head section-head--split reveal">
               <div>
@@ -462,7 +762,7 @@ export default function LandingPage() {
                 <h2 id="tech-title">Tecnologia certa para cada desafio.</h2>
               </div>
               <p>
-                Selecionamos stacks, serviços e integrações de acordo com o problema, o estágio do
+                Selecionamos stack, serviços e integrações de acordo com o problema, o estágio do
                 produto e a necessidade de escala.
               </p>
             </div>
@@ -475,66 +775,107 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="section-block section-block--compact" id="cases" aria-labelledby="cases-title">
-          <div className="section-shell">
-            <div className="section-head reveal">
-              <p className="eyebrow">Aplicações</p>
-              <h2 id="cases-title">O que podemos construir com você.</h2>
+        <section className="diagnostic-section" id="diagnostico" aria-labelledby="diagnostic-title">
+          <div className="section-shell diagnostic-grid">
+            <div className="diagnostic-copy reveal">
+              <p className="eyebrow">Diagnóstico</p>
+              <h2 id="diagnostic-title">Não sabe por onde começar? Comece pelo diagnóstico.</h2>
+              <p>
+                Você não precisa chegar com tudo definido. A Morramidy ajuda a organizar a ideia,
+                identificar prioridades e transformar o desafio em um plano técnico viável.
+              </p>
+              <div className="diagnostic-points">
+                <span>Escopo inicial</span>
+                <span>Riscos técnicos</span>
+                <span>Prioridades</span>
+                <span>Próximo passo</span>
+              </div>
             </div>
 
-            <div className="cases-grid">
-              {cases.map((caseItem) => (
-                <article className="case-card reveal" key={caseItem.title}>
-                  <img src={caseItem.image} alt="" loading="lazy" decoding="async" />
-                  <div>
-                    <h3>{caseItem.title}</h3>
-                    <p>{caseItem.text}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <form className="diagnostic-form reveal" onSubmit={handleDiagnosticSubmit}>
+              <label>
+                Nome
+                <input name="name" type="text" placeholder="Seu nome" required />
+              </label>
+              <label>
+                Empresa
+                <input name="company" type="text" placeholder="Nome da empresa" required />
+              </label>
+              <label>
+                E-mail
+                <input name="email" type="email" placeholder={CONTACT_EMAIL} required />
+              </label>
+              <label>
+                Tipo de projeto
+                <select name="projectType" defaultValue="Software sob medida">
+                  <option>Software sob medida</option>
+                  <option>Sistema web</option>
+                  <option>MVP ou SaaS</option>
+                  <option>Integração ou automação</option>
+                  <option>Modernização de sistema</option>
+                  <option>Ainda estou definindo</option>
+                </select>
+              </label>
+              <label className="form-field--full">
+                Principal desafio
+                <textarea
+                  name="challenge"
+                  rows="4"
+                  placeholder="Descreva a ideia, processo ou gargalo que você quer resolver"
+                  required
+                ></textarea>
+              </label>
+              <button className="button button--primary form-field--full" type="submit">
+                Solicitar diagnóstico
+                <Arrow />
+              </button>
+              <p className="form-microcopy form-field--full">
+                O envio abre seu e-mail com as informações preenchidas para contato direto com a
+                Morramidy.
+              </p>
+            </form>
           </div>
         </section>
 
-        <section className="about-section" id="sobre" aria-labelledby="about-title">
-          <div className="section-shell about-grid">
-            <div className="about-copy reveal">
-              <p className="eyebrow">Sobre</p>
-              <h2 id="about-title">
-                Uma software house para projetos que exigem clareza, técnica e visão.
-              </h2>
-              <p>
-                A Morramidy nasceu para ajudar empresas a transformar ideias, processos e desafios
-                de negócio em soluções digitais sólidas. Atuamos combinando desenvolvimento de
-                software, design de interfaces, consultoria tecnológica e visão estratégica.
-              </p>
+        <section className="section-block" id="faq" aria-labelledby="faq-title">
+          <div className="section-shell faq-grid">
+            <div className="section-head reveal">
+              <p className="eyebrow">FAQ</p>
+              <h2 id="faq-title">Perguntas antes de iniciar um projeto digital.</h2>
             </div>
-            <figure className="brand-panel reveal">
-              <img
-                src="/assets/brand-wall-dark.png"
-                alt="Identidade visual da Morramidy em fundo escuro"
-                loading="lazy"
-                decoding="async"
-              />
-            </figure>
+            <div className="faq-list reveal">
+              {faqs.map(([question, answer]) => (
+                <details key={question}>
+                  <summary>{question}</summary>
+                  <p>{answer}</p>
+                </details>
+              ))}
+            </div>
           </div>
         </section>
 
         <section className="cta-section" id="contato" aria-labelledby="cta-title">
           <div className="section-shell cta-shell reveal">
             <p className="eyebrow">Contato</p>
-            <h2 id="cta-title">Pronto para transformar sua ideia em software?</h2>
+            <h2 id="cta-title">
+              Transforme uma ideia, processo ou gargalo operacional em software de verdade.
+            </h2>
             <p>
-              Converse com a Morramidy e descubra como podemos desenvolver uma solução digital sob
-              medida para o seu negócio.
+              Converse com a Morramidy e descubra como estruturar uma solução digital sob medida
+              para o seu negócio.
             </p>
-            <a
-              className="button button--primary"
-              href="mailto:contato@morramidy.com.br?subject=Solicitar%20proposta%20Morramidy"
-            >
-              Solicitar proposta
-              <span aria-hidden="true">-&gt;</span>
-            </a>
+            <div className="cta-actions">
+              <a
+                className="button button--primary"
+                href={`mailto:${CONTACT_EMAIL}?subject=Solicitar%20diagn%C3%B3stico%20Morramidy`}
+              >
+                Falar com a Morramidy
+                <Arrow />
+              </a>
+              <a className="button button--ghost" href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
+                Instagram @morramidy_
+              </a>
+            </div>
           </div>
         </section>
       </main>
@@ -547,14 +888,17 @@ export default function LandingPage() {
           </div>
           <div>
             <h2>Links</h2>
+            <a href="#diagnostico">Diagnóstico</a>
             <a href="#solucoes">Soluções</a>
             <a href="#processo">Processo</a>
-            <a href="#sobre">Sobre</a>
-            <a href="#contato">Contato</a>
+            <a href="#faq">FAQ</a>
           </div>
           <div>
             <h2>Contato</h2>
-            <a href="mailto:contato@morramidy.com.br">contato@morramidy.com.br</a>
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
+              Instagram @morramidy_
+            </a>
             <a href="tel:+554198880068">(41) 9888-0068</a>
             <span>Av. Paulista, 1106 - São Paulo, SP</span>
           </div>
@@ -563,6 +907,16 @@ export default function LandingPage() {
           <span>© 2026 Morramidy. Todos os direitos reservados.</span>
         </div>
       </footer>
+
+      <div className={`mobile-sticky-cta${showStickyCta ? " is-visible" : ""}`} aria-label="Contato rápido">
+        <a className="button button--primary" href="#diagnostico">
+          Agendar diagnóstico
+          <Arrow />
+        </a>
+        <a className="button button--ghost" href={`mailto:${CONTACT_EMAIL}`}>
+          Contato
+        </a>
+      </div>
     </>
   );
 }

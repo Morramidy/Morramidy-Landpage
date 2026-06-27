@@ -2,16 +2,16 @@ import "./globals.css";
 
 export const metadata = {
   metadataBase: new URL("https://morramidy.com.br"),
-  title: "Morramidy | Software sob medida, design e estratégia",
+  title: "Morramidy | Software sob medida para processos e produtos digitais",
   description:
-    "Software house especializada em desenvolvimento sob medida, consultoria em tecnologia, web design, dados, integrações e produtos digitais escaláveis.",
+    "Software house estratégica para criar sistemas web, plataformas, integrações, automações e produtos digitais sob medida.",
   icons: {
     icon: "/assets/logo-icon-white.png",
   },
   openGraph: {
-    title: "Morramidy | Software sob medida, design e estratégia",
+    title: "Morramidy | Software sob medida para processos e produtos digitais",
     description:
-      "Unimos engenharia, design e estratégia para desenvolver soluções digitais inteligentes, escaláveis e orientadas a resultado.",
+      "Estruturamos, desenhamos e desenvolvemos soluções digitais sob medida com arquitetura, UX e visão de negócio.",
     images: ["/assets/brand-wallpaper.jpg"],
     locale: "pt_BR",
     type: "website",

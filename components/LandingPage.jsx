@@ -9,6 +9,7 @@ const navLinks = [
   ["Diagnóstico", "#diagnostico"],
   ["Soluções", "#solucoes"],
   ["Processo", "#processo"],
+  ["IA aplicada", "#ia"],
   ["Provas", "#provas"],
   ["FAQ", "#faq"],
   ["Contato", "#contato"],
@@ -125,6 +126,88 @@ const differentials = [
   ["Visão de negócio", "A entrega é pensada para operação, eficiência e resultado."],
 ];
 
+const aiPrinciples = [
+  [
+    "Produtividade com critério",
+    "IA entra para acelerar pesquisa, rascunhos técnicos, documentação, testes e revisão sem terceirizar decisão importante.",
+  ],
+  [
+    "Engenharia continua no controle",
+    "Arquitetura, segurança, regras de negócio, integrações e manutenção passam por validação humana e contexto real do projeto.",
+  ],
+  [
+    "Sem vibe code",
+    "Nada de copiar resposta pronta e torcer para funcionar. O código precisa ser compreendido, revisado, testável e sustentável.",
+  ],
+];
+
+const productTabs = [
+  {
+    id: "operacao",
+    label: "Operação",
+    eyebrow: "Roadmap priorizado",
+    title: "Sistema operacional interno",
+    status: "Em produção",
+    metrics: [
+      ["Gargalos mapeados", "Fluxos críticos"],
+      ["Risco reduzido", "Antes do código"],
+      ["Entrega", "Ciclos claros"],
+    ],
+    workflow: ["Ideia", "Escopo", "UX/UI", "API", "Deploy"],
+    chartEyebrow: "Visibilidade da operação",
+    chartTitle: "Dados, produto e execução conectados.",
+    chartBars: [42, 58, 48, 72, 66, 84],
+  },
+  {
+    id: "dados",
+    label: "Dados",
+    eyebrow: "Indicadores consolidados",
+    title: "Dashboard executivo",
+    status: "Dados vivos",
+    metrics: [
+      ["Fontes conectadas", "APIs e banco"],
+      ["Decisão", "Visão única"],
+      ["Ritmo", "Alertas claros"],
+    ],
+    workflow: ["Coleta", "Modelo", "Métricas", "Alertas", "Decisão"],
+    chartEyebrow: "Leitura gerencial",
+    chartTitle: "Indicadores organizados para decidir com menos ruído.",
+    chartBars: [34, 46, 64, 52, 78, 88],
+  },
+  {
+    id: "automacao",
+    label: "Automação",
+    eyebrow: "Fluxos automatizados",
+    title: "Rotinas sem retrabalho",
+    status: "Integrado",
+    metrics: [
+      ["Tarefas manuais", "Reduzidas"],
+      ["Integrações", "Sincronizadas"],
+      ["Operação", "Mais previsível"],
+    ],
+    workflow: ["Entrada", "Regra", "Validação", "Integração", "Saída"],
+    chartEyebrow: "Eficiência operacional",
+    chartTitle: "Menos tarefas repetidas e mais controle sobre exceções.",
+    chartBars: [26, 42, 56, 70, 82, 76],
+  },
+  {
+    id: "produto",
+    label: "Produto",
+    eyebrow: "MVP evolutivo",
+    title: "Produto digital escalável",
+    status: "Roadmap ativo",
+    metrics: [
+      ["Usuários", "Fluxos claros"],
+      ["Arquitetura", "Preparada"],
+      ["Evolução", "Backlog vivo"],
+    ],
+    workflow: ["Descoberta", "MVP", "Feedback", "Escala", "Evolução"],
+    chartEyebrow: "Crescimento do produto",
+    chartTitle: "Base técnica pronta para validar, aprender e expandir.",
+    chartBars: [30, 44, 60, 68, 74, 90],
+  },
+];
+
 const proofItems = [
   "Sistemas internos de gestão",
   "Plataformas web e portais",
@@ -229,8 +312,8 @@ const faqs = [
 function Brand({ footer = false }) {
   return (
     <a className={`brand${footer ? " brand--footer" : ""}`} href="#top" aria-label="Morramidy">
-      <img src="/assets/logo-icon-white.png" alt="" className="brand__mark" />
-      <span className="brand__name">morramidy</span>
+      <span className="brand__lockup" aria-hidden="true"></span>
+      <span className="brand__sr">Morramidy</span>
     </a>
   );
 }
@@ -240,17 +323,34 @@ function Arrow() {
 }
 
 function ProductShowcase() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeTab = productTabs[activeIndex];
+
   return (
-    <div className="product-showcase" aria-hidden="true">
-      <div className="showcase-tabs">
-        {["Operação", "Dados", "Automação", "Produto"].map((item, index) => (
-          <span className={index === 0 ? "is-active" : ""} key={item}>
-            {item}
-          </span>
+    <div className="product-showcase" aria-label="Exemplos de interfaces e fluxos digitais">
+      <div className="showcase-tabs" role="tablist" aria-label="Visualizações do produto">
+        {productTabs.map((item, index) => (
+          <button
+            className={index === activeIndex ? "is-active" : ""}
+            id={`showcase-tab-${item.id}`}
+            type="button"
+            role="tab"
+            aria-selected={index === activeIndex}
+            aria-controls={`showcase-panel-${item.id}`}
+            onClick={() => setActiveIndex(index)}
+            key={item.id}
+          >
+            {item.label}
+          </button>
         ))}
       </div>
 
-      <div className="product-window">
+      <div
+        className="product-window"
+        id={`showcase-panel-${activeTab.id}`}
+        role="tabpanel"
+        aria-labelledby={`showcase-tab-${activeTab.id}`}
+      >
         <div className="mockup-topbar">
           <span></span>
           <span></span>
@@ -259,37 +359,33 @@ function ProductShowcase() {
         <div className="product-window__body">
           <aside className="product-window__rail">
             {["01", "02", "03", "04"].map((item) => (
-              <span key={item}>{item}</span>
+              <span className={item === "01" ? "is-active" : ""} key={item}>
+                {item}
+              </span>
             ))}
           </aside>
 
-          <div className="product-window__main">
+          <div className="product-window__main" key={activeTab.id}>
             <div className="product-window__header">
               <div>
-                <small>Roadmap priorizado</small>
-                <strong>Sistema operacional interno</strong>
+                <small>{activeTab.eyebrow}</small>
+                <strong>{activeTab.title}</strong>
               </div>
-              <span>Em produção</span>
+              <span>{activeTab.status}</span>
             </div>
 
             <div className="metric-grid">
-              <div>
-                <small>Gargalos mapeados</small>
-                <strong>Fluxos críticos</strong>
-              </div>
-              <div>
-                <small>Risco reduzido</small>
-                <strong>Antes do código</strong>
-              </div>
-              <div>
-                <small>Entrega</small>
-                <strong>Ciclos claros</strong>
-              </div>
+              {activeTab.metrics.map(([label, value]) => (
+                <div key={label}>
+                  <small>{label}</small>
+                  <strong>{value}</strong>
+                </div>
+              ))}
             </div>
 
             <div className="workflow-board">
-              {["Ideia", "Escopo", "UX/UI", "API", "Deploy"].map((item, index) => (
-                <div className="workflow-node" key={item}>
+              {activeTab.workflow.map((item, index) => (
+                <div className="workflow-node" style={{ "--node-index": index }} key={item}>
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <strong>{item}</strong>
                 </div>
@@ -298,17 +394,49 @@ function ProductShowcase() {
 
             <div className="chart-card">
               <div>
-                <small>Visibilidade da operação</small>
-                <strong>Dados, produto e execução conectados.</strong>
+                <small>{activeTab.chartEyebrow}</small>
+                <strong>{activeTab.chartTitle}</strong>
               </div>
               <div className="chart-bars">
-                {[42, 58, 48, 72, 66, 84].map((height, index) => (
-                  <span style={{ "--bar-height": `${height}%` }} key={index}></span>
+                {activeTab.chartBars.map((height, index) => (
+                  <span
+                    style={{ "--bar-height": `${height}%`, "--bar-index": index }}
+                    key={`${activeTab.id}-${index}`}
+                  ></span>
                 ))}
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function AIProductivityIllustration() {
+  return (
+    <div className="ai-illustration" aria-hidden="true">
+      <div className="ai-illustration__grid"></div>
+      <div className="ai-core">
+        <img src="/assets/logo-icon-white.png" alt="" />
+        <span>IA aplicada</span>
+      </div>
+      <div className="ai-lane ai-lane--one">
+        <span>Contexto</span>
+        <strong>Briefing</strong>
+      </div>
+      <div className="ai-lane ai-lane--two">
+        <span>Critério</span>
+        <strong>Arquitetura</strong>
+      </div>
+      <div className="ai-lane ai-lane--three">
+        <span>Qualidade</span>
+        <strong>Testes</strong>
+      </div>
+      <div className="ai-output">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </div>
   );
@@ -336,7 +464,10 @@ function CaseVisual({ index }) {
           </div>
           <div className="case-visual__chart">
             {[44, 62, 52, 76, 66].map((height, barIndex) => (
-              <span style={{ "--bar-height": `${height - index * 2}%` }} key={barIndex}></span>
+              <span
+                style={{ "--bar-height": `${height - index * 2}%`, "--bar-index": barIndex }}
+                key={barIndex}
+              ></span>
             ))}
           </div>
         </div>
@@ -680,6 +811,32 @@ export default function LandingPage() {
                   <p>{text}</p>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section-block ai-section" id="ia" aria-labelledby="ai-title">
+          <div className="section-shell ai-grid">
+            <div className="ai-copy reveal">
+              <p className="eyebrow">IA aplicada ao trabalho</p>
+              <h2 id="ai-title">IA para aumentar produtividade, sem abrir mão de engenharia.</h2>
+              <p>
+                A Morramidy usa IA como ferramenta de trabalho: para acelerar análise, organização,
+                documentação, testes e revisão. Não é vibe code. É processo técnico com contexto,
+                critério e responsabilidade sobre o resultado.
+              </p>
+              <div className="ai-principles">
+                {aiPrinciples.map(([title, text]) => (
+                  <article className="ai-principle reveal" key={title}>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="reveal reveal--delay">
+              <AIProductivityIllustration />
             </div>
           </div>
         </section>

@@ -1,40 +1,43 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const CONTACT_EMAIL = "morramidy.development@gmail.com";
 const INSTAGRAM_URL = "https://www.instagram.com/morramidy_/";
 
 const navLinks = [
-  ["Diagnóstico", "#diagnostico"],
   ["Soluções", "#solucoes"],
+  ["Produtos", "#exemplos"],
   ["Processo", "#processo"],
-  ["IA aplicada", "#ia"],
-  ["Provas", "#provas"],
+  ["Engenharia e IA", "#ia"],
   ["FAQ", "#faq"],
-  ["Contato", "#contato"],
 ];
 
 const problems = [
   [
     "Processos manuais",
     "Planilhas, mensagens e tarefas repetidas consomem tempo e aumentam o risco de erro.",
+    "manual",
   ],
   [
     "Dados espalhados",
     "Informações importantes ficam desconectadas, dificultando análise e tomada de decisão.",
+    "data",
   ],
   [
     "Sistemas que não conversam",
     "Ferramentas isoladas criam retrabalho e impedem uma operação fluida.",
+    "integration",
   ],
   [
     "Produto sem evolução",
     "Ideias boas travam quando não há arquitetura, priorização e execução técnica.",
+    "product",
   ],
   [
     "Baixa visibilidade",
     "Sem indicadores claros, a gestão decide com atraso ou pouca confiança.",
+    "dashboard",
   ],
 ];
 
@@ -61,14 +64,17 @@ const valuePillars = [
   [
     "Estratégia antes do código",
     "Transformamos necessidade de negócio em escopo, prioridades e roadmap técnico.",
+    "strategy",
   ],
   [
     "Engenharia preparada para evoluir",
     "Construímos sistemas organizados, integráveis e prontos para manutenção.",
+    "architecture",
   ],
   [
     "Experiência para usuários reais",
     "Desenhamos fluxos claros para melhorar adoção, eficiência e tomada de decisão.",
+    "ux",
   ],
 ];
 
@@ -76,68 +82,79 @@ const solutions = [
   [
     "Software sob medida",
     "Sistemas criados para regras, fluxos e objetivos específicos da sua empresa.",
+    "code",
   ],
   [
     "Sistemas web",
     "Aplicações modernas para gestão, atendimento, operação, análise e relacionamento.",
+    "web",
   ],
   [
     "MVP e SaaS",
     "Do primeiro produto validável a uma base técnica consistente para crescimento.",
+    "rocket",
   ],
   [
     "Integrações e APIs",
     "Conectamos sistemas, bancos de dados e serviços externos com arquitetura confiável.",
+    "plug",
   ],
   [
     "Automação de processos",
     "Reduzimos tarefas manuais e criamos fluxos digitais mais previsíveis.",
+    "automation",
   ],
   [
     "Modernização de sistemas",
     "Evoluímos produtos existentes com melhor performance, UX e manutenção.",
+    "refresh",
   ],
   [
     "UX/UI para produtos digitais",
     "Interfaces claras, profissionais e funcionais para melhorar adoção e eficiência.",
+    "layout",
   ],
   [
     "Dashboards e indicadores",
     "Painéis para transformar dados operacionais em decisão e visibilidade.",
+    "dashboard",
   ],
 ];
 
 const processSteps = [
-  ["Diagnóstico", "Entendemos o problema, o negócio, os usuários e as restrições."],
-  ["Escopo", "Definimos prioridades, funcionalidades e critérios de sucesso."],
-  ["Protótipo", "Validamos fluxos e telas antes de comprometer desenvolvimento."],
-  ["Arquitetura", "Planejamos base técnica, integrações, dados, segurança e evolução."],
-  ["Desenvolvimento", "Construímos com ciclos objetivos, qualidade técnica e comunicação clara."],
-  ["Implantação", "Publicamos, configuramos ambientes e acompanhamos a entrada em operação."],
-  ["Evolução", "Medimos, ajustamos e expandimos conforme o negócio cresce."],
+  ["Diagnóstico", "Entendemos o problema, o negócio, os usuários e as restrições.", "discovery"],
+  ["Escopo", "Definimos prioridades, funcionalidades e critérios de sucesso.", "scope"],
+  ["Protótipo", "Validamos fluxos e telas antes de comprometer desenvolvimento.", "prototype"],
+  ["Arquitetura", "Planejamos base técnica, integrações, dados, segurança e evolução.", "architecture"],
+  ["Desenvolvimento", "Construímos com ciclos objetivos, qualidade técnica e comunicação clara.", "code"],
+  ["Implantação", "Publicamos, configuramos ambientes e acompanhamos a entrada em operação.", "launch"],
+  ["Evolução", "Medimos, ajustamos e expandimos conforme o negócio cresce.", "evolve"],
 ];
 
 const differentials = [
-  ["Menos risco técnico", "Decisões importantes são tomadas antes de comprometer tempo e orçamento."],
-  ["Clareza de execução", "Você sabe o que será construído, por que e em qual prioridade."],
-  ["Design funcional", "A interface serve ao processo, não apenas à estética."],
-  ["Arquitetura preparada", "O sistema nasce pronto para manutenção, integração e crescimento."],
-  ["Comunicação direta", "Riscos, decisões e próximos passos ficam visíveis durante o projeto."],
-  ["Visão de negócio", "A entrega é pensada para operação, eficiência e resultado."],
+  ["Menos risco técnico", "Decisões importantes são tomadas antes de comprometer tempo e orçamento.", "shield"],
+  ["Clareza de execução", "Você sabe o que será construído, por que e em qual prioridade.", "clarity"],
+  ["Design funcional", "A interface serve ao processo, não apenas à estética.", "design"],
+  ["Arquitetura preparada", "O sistema nasce pronto para manutenção, integração e crescimento.", "blocks"],
+  ["Comunicação direta", "Riscos, decisões e próximos passos ficam visíveis durante o projeto.", "chat"],
+  ["Visão de negócio", "A entrega é pensada para operação, eficiência e resultado.", "business"],
 ];
 
 const aiPrinciples = [
   [
     "Produtividade com critério",
     "IA entra para acelerar pesquisa, rascunhos técnicos, documentação, testes e revisão sem terceirizar decisão importante.",
+    "ai",
   ],
   [
     "Engenharia continua no controle",
     "Arquitetura, segurança, regras de negócio, integrações e manutenção passam por validação humana e contexto real do projeto.",
+    "architecture",
   ],
   [
-    "Sem vibe code",
-    "Nada de copiar resposta pronta e torcer para funcionar. O código precisa ser compreendido, revisado, testável e sustentável.",
+    "Responsabilidade sobre cada entrega",
+    "Todo código precisa ser compreendido, revisado e testado. A responsabilidade técnica continua com quem constrói o produto.",
+    "review",
   ],
 ];
 
@@ -145,125 +162,76 @@ const productTabs = [
   {
     id: "operacao",
     label: "Operação",
-    eyebrow: "Roadmap priorizado",
-    title: "Sistema operacional interno",
-    status: "Em produção",
-    metrics: [
-      ["Gargalos mapeados", "Fluxos críticos"],
-      ["Risco reduzido", "Antes do código"],
-      ["Entrega", "Ciclos claros"],
-    ],
-    workflow: ["Ideia", "Escopo", "UX/UI", "API", "Deploy"],
-    chartEyebrow: "Visibilidade da operação",
-    chartTitle: "Dados, produto e execução conectados.",
-    chartBars: [42, 58, 48, 72, 66, 84],
+    title: "Gestão comercial",
+    image: "gestao",
+    description: "Negócios, responsáveis e próximas ações em um só lugar.",
+    alt: "Conceito de CRM Nexo com pipeline comercial, oportunidades e responsáveis.",
+    features: ["Pipeline comercial", "Histórico de clientes", "Gestão de atividades"],
   },
   {
     id: "dados",
     label: "Dados",
-    eyebrow: "Indicadores consolidados",
     title: "Dashboard executivo",
-    status: "Dados vivos",
-    metrics: [
-      ["Fontes conectadas", "APIs e banco"],
-      ["Decisão", "Visão única"],
-      ["Ritmo", "Alertas claros"],
-    ],
-    workflow: ["Coleta", "Modelo", "Métricas", "Alertas", "Decisão"],
-    chartEyebrow: "Leitura gerencial",
-    chartTitle: "Indicadores organizados para decidir com menos ruído.",
-    chartBars: [34, 46, 64, 52, 78, 88],
+    image: "indicadores",
+    description: "Uma visão dos indicadores que orientam sua operação.",
+    alt: "Conceito de dashboard com receita, gráfico mensal e desempenho por unidade.",
+    features: ["Indicadores consolidados", "Visão por unidade", "Relatórios de gestão"],
   },
   {
     id: "automacao",
     label: "Automação",
-    eyebrow: "Fluxos automatizados",
-    title: "Rotinas sem retrabalho",
-    status: "Integrado",
-    metrics: [
-      ["Tarefas manuais", "Reduzidas"],
-      ["Integrações", "Sincronizadas"],
-      ["Operação", "Mais previsível"],
-    ],
-    workflow: ["Entrada", "Regra", "Validação", "Integração", "Saída"],
-    chartEyebrow: "Eficiência operacional",
-    chartTitle: "Menos tarefas repetidas e mais controle sobre exceções.",
-    chartBars: [26, 42, 56, 70, 82, 76],
+    title: "Fluxos e integrações",
+    image: "automacoes",
+    description: "Regras claras para conectar sistemas e reduzir tarefas manuais.",
+    alt: "Conceito de sistema de automação com fluxo de aprovação e registro de execuções.",
+    features: ["Aprovação de pedidos", "Integração com ERP", "Rastreabilidade"],
   },
   {
     id: "produto",
     label: "Produto",
-    eyebrow: "MVP evolutivo",
-    title: "Produto digital escalável",
-    status: "Roadmap ativo",
-    metrics: [
-      ["Usuários", "Fluxos claros"],
-      ["Arquitetura", "Preparada"],
-      ["Evolução", "Backlog vivo"],
-    ],
-    workflow: ["Descoberta", "MVP", "Feedback", "Escala", "Evolução"],
-    chartEyebrow: "Crescimento do produto",
-    chartTitle: "Base técnica pronta para validar, aprender e expandir.",
-    chartBars: [30, 44, 60, 68, 74, 90],
+    title: "Portal do cliente",
+    image: "portal",
+    description: "Projetos, documentos e solicitações em uma experiência integrada.",
+    alt: "Conceito de portal do cliente com projetos, documentos e solicitações de suporte.",
+    features: ["Área do cliente", "Documentos", "Acompanhamento de projetos"],
   },
 ];
 
 const proofItems = [
-  "Sistemas internos de gestão",
-  "Plataformas web e portais",
-  "Produtos MVP e SaaS",
-  "Dashboards operacionais",
-  "Integrações entre sistemas",
-  "Automação de rotinas",
-  "Modernização de sistemas",
-  "UX/UI para produtos digitais",
+  ["Sistemas internos de gestão", "operations"],
+  ["Plataformas web e portais", "web"],
+  ["Produtos MVP e SaaS", "rocket"],
+  ["Dashboards operacionais", "dashboard"],
+  ["Integrações entre sistemas", "plug"],
+  ["Automação de rotinas", "automation"],
+  ["Modernização de sistemas", "refresh"],
+  ["UX/UI para produtos digitais", "ux"],
 ];
 
 const offerTracks = [
   [
     "Diagnóstico técnico",
     "Organizamos ideia, riscos, integrações e prioridades antes de iniciar o desenvolvimento.",
+    "compass",
   ],
   [
     "MVP validável",
     "Construímos uma primeira versão enxuta para testar valor, operação e experiência de uso.",
+    "rocket",
   ],
   [
     "Sistema sob medida",
     "Criamos plataformas, portais, CRMs, ERPs internos e fluxos digitais específicos.",
+    "layers",
   ],
   [
     "Evolução de produto",
     "Melhoramos sistemas existentes com UX, arquitetura, performance e integrações.",
+    "evolve",
   ],
 ];
 
-const examples = [
-  [
-    "CRM customizado",
-    "Atendimento, funil comercial, histórico e automações no fluxo da sua empresa.",
-  ],
-  [
-    "Portal de clientes",
-    "Área logada para dados, documentos, solicitações e acompanhamento.",
-  ],
-  [
-    "Sistema operacional interno",
-    "Controle de processos, aprovações, cadastros e tarefas críticas.",
-  ],
-  [
-    "Dashboard executivo",
-    "Indicadores consolidados para gestão acompanhar performance e gargalos.",
-  ],
-  [
-    "Plataforma SaaS",
-    "Produto digital com usuários, permissões, planos e evolução contínua.",
-  ],
-  [
-    "Integrações e automações",
-    "APIs e rotinas para conectar ferramentas e eliminar retrabalho.",
-  ],
-];
+const examples = [productTabs[0], productTabs[3], productTabs[1], productTabs[2]];
 
 const technologies = [
   "Front-end",
@@ -320,6 +288,252 @@ function Brand({ footer = false }) {
 
 function Arrow() {
   return <span aria-hidden="true">-&gt;</span>;
+}
+
+function IconShape({ name }) {
+  switch (name) {
+    case "manual":
+      return (
+        <>
+          <path d="M7 4h10l2 2v14H5V4h2Z" />
+          <path d="M8 9h8M8 13h8M8 17h5" />
+        </>
+      );
+    case "data":
+    case "dashboard":
+      return (
+        <>
+          <path d="M4 19V5" />
+          <path d="M8 17v-6M12 17V7M16 17v-9M20 17v-4" />
+          <path d="M4 19h17" />
+        </>
+      );
+    case "integration":
+    case "plug":
+      return (
+        <>
+          <path d="M8 8h4a4 4 0 0 1 4 4v1" />
+          <path d="M16 16h-4a4 4 0 0 1-4-4v-1" />
+          <path d="M7 5 4 8l3 3" />
+          <path d="m17 13 3 3-3 3" />
+        </>
+      );
+    case "product":
+    case "saas":
+      return (
+        <>
+          <path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z" />
+          <path d="m4 7.5 8 4.5 8-4.5" />
+          <path d="M12 12v9" />
+        </>
+      );
+    case "strategy":
+    case "compass":
+      return (
+        <>
+          <circle cx="12" cy="12" r="8" />
+          <path d="m14.7 9.3-1.6 4.2-4.1 1.4 1.6-4.1 4.1-1.5Z" />
+        </>
+      );
+    case "architecture":
+    case "blocks":
+    case "layers":
+      return (
+        <>
+          <path d="m12 3 8 4-8 4-8-4 8-4Z" />
+          <path d="m4 12 8 4 8-4" />
+          <path d="m4 17 8 4 8-4" />
+        </>
+      );
+    case "ux":
+    case "layout":
+      return (
+        <>
+          <rect x="4" y="5" width="16" height="14" rx="2" />
+          <path d="M4 10h16" />
+          <path d="M9 14h6M9 17h3" />
+        </>
+      );
+    case "code":
+      return (
+        <>
+          <path d="m9 8-4 4 4 4" />
+          <path d="m15 8 4 4-4 4" />
+          <path d="m13 5-2 14" />
+        </>
+      );
+    case "web":
+    case "portal":
+      return (
+        <>
+          <rect x="4" y="5" width="16" height="14" rx="2" />
+          <path d="M4 9h16" />
+          <path d="M8 13h3M8 16h8" />
+        </>
+      );
+    case "rocket":
+    case "launch":
+      return (
+        <>
+          <path d="M13 4c3.6.5 6.1 3 6.6 6.6L15 15l-6-6 4-5Z" />
+          <path d="M9 9 5 10.5 3.7 14.3 8 13" />
+          <path d="M15 15 13.5 20 17 18.5 18.5 15" />
+          <circle cx="14" cy="10" r="1.5" />
+        </>
+      );
+    case "automation":
+      return (
+        <>
+          <path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z" />
+          <path d="M12 3v2M12 19v2M4.2 7.5l1.7 1M18.1 15.5l1.7 1M4.2 16.5l1.7-1M18.1 8.5l1.7-1" />
+        </>
+      );
+    case "refresh":
+    case "evolve":
+      return (
+        <>
+          <path d="M20 7v5h-5" />
+          <path d="M4 17v-5h5" />
+          <path d="M18 12a6 6 0 0 0-10.2-4.2L4 12" />
+          <path d="M6 12a6 6 0 0 0 10.2 4.2L20 12" />
+        </>
+      );
+    case "discovery":
+      return (
+        <>
+          <circle cx="11" cy="11" r="6" />
+          <path d="m16 16 4 4" />
+          <path d="M8.5 11h5" />
+        </>
+      );
+    case "scope":
+      return (
+        <>
+          <path d="M5 6h14M5 12h14M5 18h9" />
+          <path d="m15.5 16.5 2 2 3-4" />
+        </>
+      );
+    case "prototype":
+      return (
+        <>
+          <rect x="5" y="4" width="14" height="16" rx="2" />
+          <path d="M8 8h8M8 12h5M8 16h8" />
+        </>
+      );
+    case "shield":
+      return (
+        <>
+          <path d="M12 3 19 6v5c0 4.7-2.8 8-7 10-4.2-2-7-5.3-7-10V6l7-3Z" />
+          <path d="m9.5 12 1.8 1.8 3.4-4" />
+        </>
+      );
+    case "clarity":
+      return (
+        <>
+          <path d="M4 6h16M4 12h10M4 18h7" />
+          <path d="m16 15 2 2 3-4" />
+        </>
+      );
+    case "design":
+      return (
+        <>
+          <path d="M5 19 19 5" />
+          <path d="M7 5h12v12" />
+          <path d="M5 12h7v7H5z" />
+        </>
+      );
+    case "chat":
+      return (
+        <>
+          <path d="M5 6h14v10H9l-4 4V6Z" />
+          <path d="M8 10h8M8 13h5" />
+        </>
+      );
+    case "business":
+      return (
+        <>
+          <path d="M4 20V8h6v12" />
+          <path d="M10 20V4h10v16" />
+          <path d="M7 11h1M7 15h1M14 8h2M14 12h2M14 16h2" />
+        </>
+      );
+    case "ai":
+      return (
+        <>
+          <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
+          <circle cx="12" cy="12" r="5" />
+          <path d="m8.5 8.5 7 7M15.5 8.5l-7 7" />
+        </>
+      );
+    case "review":
+      return (
+        <>
+          <path d="M7 4h10l2 2v14H5V4h2Z" />
+          <path d="m8 14 2 2 4-5" />
+          <path d="M8 8h7" />
+        </>
+      );
+    case "operations":
+    case "crm":
+      return (
+        <>
+          <rect x="4" y="5" width="16" height="14" rx="2" />
+          <path d="M8 9h3M8 13h8M8 16h5" />
+          <path d="M15 8h2v2h-2z" />
+        </>
+      );
+    default:
+      return (
+        <>
+          <circle cx="12" cy="12" r="8" />
+          <path d="M12 7v10M7 12h10" />
+        </>
+      );
+  }
+}
+
+function VisualIcon({ name, className = "" }) {
+  return (
+    <span className={`visual-icon${className ? ` ${className}` : ""}`} aria-hidden="true">
+      <svg viewBox="0 0 24 24" role="img">
+        <IconShape name={name} />
+      </svg>
+    </span>
+  );
+}
+
+function SolutionMapIllustration() {
+  const items = [
+    ["strategy", "Estratégia"],
+    ["ux", "UX/UI"],
+    ["code", "Código"],
+    ["integration", "APIs"],
+    ["dashboard", "Dados"],
+  ];
+
+  return (
+    <div className="solution-map reveal" aria-hidden="true">
+      <div className="solution-map__mesh"></div>
+      <div className="solution-map__core">
+        <VisualIcon name="product" />
+        <strong>Produto digital</strong>
+        <span>sob medida</span>
+      </div>
+      <div className="solution-map__orbit">
+        {items.map(([icon, label], index) => (
+          <div className={`solution-map__node solution-map__node--${index + 1}`} key={label}>
+            <VisualIcon name={icon} />
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+      <div className="solution-map__footer">
+        <span>Escopo</span>
+        <span>Arquitetura</span>
+        <span>Entrega</span>
+      </div>
+    </div>
+  );
 }
 
 function ProductShowcase() {
@@ -419,7 +633,6 @@ function AIProductivityIllustration() {
       <div className="ai-illustration__grid"></div>
       <div className="ai-core">
         <img src="/assets/logo-icon-white.png" alt="" />
-        <span>IA aplicada</span>
       </div>
       <div className="ai-lane ai-lane--one">
         <span>Contexto</span>
@@ -442,12 +655,13 @@ function AIProductivityIllustration() {
   );
 }
 
-function CaseVisual({ index }) {
+function CaseVisual({ index, icon }) {
   return (
     <div className="case-visual" aria-hidden="true">
       <div className="case-visual__topbar">
-        <span></span>
-        <span></span>
+        <VisualIcon name={icon} className="case-visual__icon" />
+        <span className="case-visual__bar case-visual__bar--wide"></span>
+        <span className="case-visual__bar case-visual__bar--short"></span>
       </div>
       <div className="case-visual__layout">
         <div className="case-visual__rail">
@@ -712,9 +926,12 @@ export default function LandingPage() {
             </div>
 
             <div className="problem-grid">
-              {problems.map(([title, text], index) => (
+              {problems.map(([title, text, icon], index) => (
                 <article className="problem-card reveal" key={title}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <div className="card-topline">
+                    <VisualIcon name={icon} />
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                  </div>
                   <h3>{title}</h3>
                   <p>{text}</p>
                 </article>
@@ -738,9 +955,12 @@ export default function LandingPage() {
             </div>
 
             <div className="value-grid">
-              {valuePillars.map(([title, text], index) => (
+              {valuePillars.map(([title, text, icon], index) => (
                 <article className="pillar-card reveal" key={title}>
-                  <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="card-topline">
+                    <VisualIcon name={icon} />
+                    <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
+                  </div>
                   <h3>{title}</h3>
                   <p>{text}</p>
                 </article>
@@ -762,10 +982,15 @@ export default function LandingPage() {
               </p>
             </div>
 
+            <SolutionMapIllustration />
+
             <div className="solutions-grid solutions-grid--expanded">
-              {solutions.map(([title, text], index) => (
+              {solutions.map(([title, text, icon], index) => (
                 <article className="solution-card reveal" key={title}>
-                  <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="card-topline">
+                    <VisualIcon name={icon} />
+                    <span className="card-index">{String(index + 1).padStart(2, "0")}</span>
+                  </div>
                   <h3>{title}</h3>
                   <p>{text}</p>
                 </article>
@@ -786,9 +1011,12 @@ export default function LandingPage() {
             </div>
 
             <div className="process-line">
-              {processSteps.map(([title, text], index) => (
+              {processSteps.map(([title, text, icon], index) => (
                 <article className="process-step reveal" key={title}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <div className="process-step__top">
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <VisualIcon name={icon} />
+                  </div>
                   <h3>{title}</h3>
                   <p>{text}</p>
                 </article>
@@ -805,8 +1033,9 @@ export default function LandingPage() {
             </div>
 
             <div className="differentials-grid">
-              {differentials.map(([title, text]) => (
+              {differentials.map(([title, text, icon]) => (
                 <article className="mini-card reveal" key={title}>
+                  <VisualIcon name={icon} />
                   <h3>{title}</h3>
                   <p>{text}</p>
                 </article>
@@ -826,8 +1055,9 @@ export default function LandingPage() {
                 critério e responsabilidade sobre o resultado.
               </p>
               <div className="ai-principles">
-                {aiPrinciples.map(([title, text]) => (
+                {aiPrinciples.map(([title, text, icon]) => (
                   <article className="ai-principle reveal" key={title}>
+                    <VisualIcon name={icon} />
                     <h3>{title}</h3>
                     <p>{text}</p>
                   </article>
@@ -854,8 +1084,11 @@ export default function LandingPage() {
             </div>
 
             <div className="proof-list reveal">
-              {proofItems.map((item) => (
-                <span key={item}>{item}</span>
+              {proofItems.map(([item, icon]) => (
+                <span key={item}>
+                  <VisualIcon name={icon} />
+                  {item}
+                </span>
               ))}
             </div>
           </div>
@@ -875,9 +1108,12 @@ export default function LandingPage() {
             </div>
 
             <div className="tracks-grid">
-              {offerTracks.map(([title, text], index) => (
+              {offerTracks.map(([title, text, icon], index) => (
                 <article className="track-card reveal" key={title}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <div className="card-topline">
+                    <VisualIcon name={icon} />
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                  </div>
                   <h3>{title}</h3>
                   <p>{text}</p>
                 </article>
@@ -898,9 +1134,9 @@ export default function LandingPage() {
             </div>
 
             <div className="examples-grid">
-              {examples.map(([title, text], index) => (
+              {examples.map(([title, text, icon], index) => (
                 <article className="case-card reveal" key={title}>
-                  <CaseVisual index={index} />
+                  <CaseVisual index={index} icon={icon} />
                   <div className="case-card__body">
                     <h3>{title}</h3>
                     <p>{text}</p>

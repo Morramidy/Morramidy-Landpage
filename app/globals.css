@@ -609,6 +609,57 @@ p {
   transform: translateY(-1px);
 }
 
+.product-preview {
+  width: min(100%, 960px);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.product-preview__caption {
+  min-height: 96px;
+  padding: 0 8px 20px;
+}
+
+.product-preview__caption h3 {
+  margin-bottom: 8px;
+}
+
+.product-preview__caption p {
+  margin-bottom: 0;
+}
+
+.product-preview__image,
+.case-preview {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  background: var(--bg-soft);
+}
+
+.product-preview__image {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  animation: mockupSwap 420ms ease both;
+}
+
+.product-preview__features {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 20px 0 12px;
+  padding: 0;
+  list-style: none;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.product-preview__note {
+  font-size: 0.8rem;
+  margin-bottom: 0;
+}
+
 .product-window {
   position: relative;
   width: 100%;
@@ -1058,9 +1109,12 @@ p {
   gap: clamp(36px, 6vw, 82px);
 }
 
-.solutions-grid--expanded,
-.examples-grid {
+.solutions-grid--expanded {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.examples-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .solution-map {

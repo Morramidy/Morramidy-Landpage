@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const CONTACT_EMAIL = "morramidy.development@gmail.com";
 const INSTAGRAM_URL = "https://www.instagram.com/morramidy_/";
@@ -551,7 +551,20 @@ function ProductShowcase() {
             role="tab"
             aria-selected={index === activeIndex}
             aria-controls={`showcase-panel-${item.id}`}
+            tabIndex={index === activeIndex ? 0 : -1}
             onClick={() => setActiveIndex(index)}
+            onKeyDown={(event) => {
+              const nextIndex = {
+                ArrowRight: (index + 1) % productTabs.length,
+                ArrowLeft: (index + productTabs.length - 1) % productTabs.length,
+                Home: 0,
+                End: productTabs.length - 1,
+              }[event.key];
+              if (nextIndex === undefined) return;
+              event.preventDefault();
+              setActiveIndex(nextIndex);
+              document.getElementById(`showcase-tab-${productTabs[nextIndex].id}`)?.focus();
+            }}
             key={item.id}
           >
             {item.label}
@@ -560,68 +573,29 @@ function ProductShowcase() {
       </div>
 
       <div
-        className="product-window"
+        className="product-preview"
         id={`showcase-panel-${activeTab.id}`}
         role="tabpanel"
         aria-labelledby={`showcase-tab-${activeTab.id}`}
+        tabIndex={0}
       >
-        <div className="mockup-topbar">
-          <span></span>
-          <span></span>
+        <div className="product-preview__caption">
+          <h3>{activeTab.title}</h3>
+          <p>{activeTab.description}</p>
         </div>
-
-        <div className="product-window__body">
-          <aside className="product-window__rail">
-            {["01", "02", "03", "04"].map((item) => (
-              <span className={item === "01" ? "is-active" : ""} key={item}>
-                {item}
-              </span>
-            ))}
-          </aside>
-
-          <div className="product-window__main" key={activeTab.id}>
-            <div className="product-window__header">
-              <div>
-                <small>{activeTab.eyebrow}</small>
-                <strong>{activeTab.title}</strong>
-              </div>
-              <span>{activeTab.status}</span>
-            </div>
-
-            <div className="metric-grid">
-              {activeTab.metrics.map(([label, value]) => (
-                <div key={label}>
-                  <small>{label}</small>
-                  <strong>{value}</strong>
-                </div>
-              ))}
-            </div>
-
-            <div className="workflow-board">
-              {activeTab.workflow.map((item, index) => (
-                <div className="workflow-node" style={{ "--node-index": index }} key={item}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <strong>{item}</strong>
-                </div>
-              ))}
-            </div>
-
-            <div className="chart-card">
-              <div>
-                <small>{activeTab.chartEyebrow}</small>
-                <strong>{activeTab.chartTitle}</strong>
-              </div>
-              <div className="chart-bars">
-                {activeTab.chartBars.map((height, index) => (
-                  <span
-                    style={{ "--bar-height": `${height}%`, "--bar-index": index }}
-                    key={`${activeTab.id}-${index}`}
-                  ></span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        <img
+          className="product-preview__image"
+          key={activeTab.image}
+          src={`/assets/products/${activeTab.image}.webp`}
+          alt={activeTab.alt}
+          width="1536"
+          height="1024"
+          decoding="async"
+        />
+        <ul className="product-preview__features">
+          {activeTab.features.map((feature) => <li key={feature}>{feature}</li>)}
+        </ul>
+        <p className="product-preview__note">Conceito ilustrativo com dados fictícios.</p>
       </div>
     </div>
   );
@@ -655,38 +629,17 @@ function AIProductivityIllustration() {
   );
 }
 
-function CaseVisual({ index, icon }) {
+function CaseVisual({ product }) {
   return (
-    <div className="case-visual" aria-hidden="true">
-      <div className="case-visual__topbar">
-        <VisualIcon name={icon} className="case-visual__icon" />
-        <span className="case-visual__bar case-visual__bar--wide"></span>
-        <span className="case-visual__bar case-visual__bar--short"></span>
-      </div>
-      <div className="case-visual__layout">
-        <div className="case-visual__rail">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <div className="case-visual__content">
-          <span className="case-visual__line case-visual__line--wide"></span>
-          <div className="case-visual__cards">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div className="case-visual__chart">
-            {[44, 62, 52, 76, 66].map((height, barIndex) => (
-              <span
-                style={{ "--bar-height": `${height - index * 2}%`, "--bar-index": barIndex }}
-                key={barIndex}
-              ></span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    <img
+      className="case-preview"
+      src={`/assets/products/${product.image}.webp`}
+      alt={product.alt}
+      width="1536"
+      height="1024"
+      loading="lazy"
+      decoding="async"
+    />
   );
 }
 
@@ -1128,18 +1081,18 @@ export default function LandingPage() {
               <p className="eyebrow">Aplicações</p>
               <h2 id="examples-title">O que podemos construir com você.</h2>
               <p>
-                Exemplos concretos de produtos e sistemas que geram controle, reduzem retrabalho e
-                criam vantagem operacional.
+                Conceitos de produtos e sistemas que podemos desenvolver para sua operação.
+                Interfaces ilustrativas com dados fictícios, não cases de clientes.
               </p>
             </div>
 
             <div className="examples-grid">
-              {examples.map(([title, text, icon], index) => (
-                <article className="case-card reveal" key={title}>
-                  <CaseVisual index={index} icon={icon} />
+              {examples.map((product) => (
+                <article className="case-card reveal" key={product.id}>
+                  <CaseVisual product={product} />
                   <div className="case-card__body">
-                    <h3>{title}</h3>
-                    <p>{text}</p>
+                    <h3>{product.title}</h3>
+                    <p>{product.description}</p>
                   </div>
                 </article>
               ))}
